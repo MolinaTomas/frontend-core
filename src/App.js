@@ -7,6 +7,7 @@ import AvisosButton from './AvisosButton';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import RabbitMQContainers from './RabbitMQContainers';
 import LogsPage from './LogsPage';
+import Login from './Login';
 
 function Home() {
   const apiKey = 'eyJrIjoibUZKaE9IVFVQTWlJYzFmR09kdW1yRmJUbVhNZ1IzRXAiLCJuIjoibWFpbiIsImlkIjoxfQ==';
@@ -16,7 +17,7 @@ function Home() {
     navigate('/rabbitmq-containers');
   };
   const fetchDashboardData = async () => {
-    fetch(`http://localhost:3000/api/dashboards/uid/${dashboardUid}`, {
+    fetch(`http://grafana:3000/api/dashboards/uid/${dashboardUid}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
@@ -119,7 +120,7 @@ function Home() {
           <div>Error al cargar el contenido. Por favor, inténtalo más tarde.</div>
         ) : (
           <iframe
-            src="http://localhost:3000/d/lJNlSmkNk/futbol?orgId=1&kiosk"
+            src="http://grafana:3000/d/lJNlSmkNk/futbol?orgId=1&kiosk"
             width="100%"
             height="800"
             frameBorder="0"
@@ -134,10 +135,14 @@ function Home() {
 }
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={isAuthenticated ? <Home /> : <Login onLogin={handleLogin} />} />
         <Route path="/rabbitmq-containers" element={<RabbitMQContainers />} />
         <Route path="/logs" element={<LogsPage />} />
       </Routes>

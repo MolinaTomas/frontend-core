@@ -11,7 +11,7 @@ const RabbitMQContainers = () => {
 
     const fetchQueues = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/queues');
+            const response = await axios.get('http://core_proxy:3001/queues');
             if (response.data && typeof response.data === 'object') {
                 const queuesArray = Object.entries(response.data).map(([name, details]) => ({
                     name,

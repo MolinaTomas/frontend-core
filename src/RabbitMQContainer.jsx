@@ -3,11 +3,12 @@ import './RabbitMQContainer.css';
 
 const RabbitMQContainer = ({ name, status, ttl, messages, consumers, maxLength, maxPriority, deadLetterExchange, deadLetterRoutingKey }) => {
     const [newTTL, setNewTTL] = useState('');
+    const [newQTY, setNewQTY] = useState('');
 
     const handleTTLChange = async () => {
         console.log("nuevoTTL: ", newTTL);
         try {
-            const response = await fetch(`http://localhost:8000/retry_queues?module=${name}&attribute=qty&value=${newTTL}`, {
+            const response = await fetch(`http://core_service:8000/retry_queues?module=${name}&attribute=ttl&value=${newTTL}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -22,6 +23,47 @@ const RabbitMQContainer = ({ name, status, ttl, messages, consumers, maxLength, 
         } catch (error) {
             console.error('Error updating TTL:', error);
             alert('Error al actualizar el TTL');
+        }
+    };
+
+    const handleQTYChange = async () => {
+        console.log("nuevoQTY: ", newQTY);
+        try {
+            const response = await fetch(`http://core_service:8000/retry_queues?module=${name}&attribute=qty&value=${newQTY}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al actualizar el QTY');
+            }
+
+            alert('QTY actualizado exitosamente');
+        } catch (error) {
+            console.error('Error updating QTY:', error);
+            alert('Error al actualizar el QTY');
+        }
+    };
+
+    const handleRelease = async () => {
+        try {
+            const response = await fetch(`http://core_service:8000/dead-letter/release?module=${name}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al liberar la cola');
+            }
+
+            alert('Cola liberada exitosamente');
+        } catch (error) {
+            console.error('Error al liberar la cola:', error);
+            alert('Error al liberar la cola');
         }
     };
 
@@ -46,6 +88,14 @@ const RabbitMQContainer = ({ name, status, ttl, messages, consumers, maxLength, 
                     placeholder="Nuevo TTL (ms)"
                 />
                 <button onClick={handleTTLChange}>Actualizar TTL</button>
+                <input
+                    type="number"
+                    value={newQTY}
+                    onChange={(e) => setNewQTY(e.target.value)}
+                    placeholder="Nueva cantidad de colas de retry"
+                />
+                <button onClick={handleQTYChange}>Actualizar cantidad de colas retry</button>
+                <button onClick={handleRelease}>Liberar Mensajes</button>
             </div>
         </div>
     );

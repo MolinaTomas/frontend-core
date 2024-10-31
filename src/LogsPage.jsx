@@ -4,26 +4,31 @@ import './LogsPage.css';
 
 const LogsPage = () => {
     const [logs, setLogs] = useState([]);
-    const [filteredLogs, setFilteredLogs] = useState([]);
+    const [filteredLogs, setFilteredLogs] = useState([]); // Aseguramos que es un array vacÃ­o al inicio
     const [dateFilter, setDateFilter] = useState('');
     const [senderFilter, setSenderFilter] = useState('');
     const [receiverFilter, setReceiverFilter] = useState('');
     const [caseFilter, setCaseFilter] = useState('');
     const [reasonFilter, setReasonFilter] = useState('');
 
-    const fetchLogs = async (filtro = '', campo = '', offset = '', date = '') => {
-        console.log("FECHA LOG: ", date)
+    const fetchLogs = async (filtro = '', campo = '', date = '', offset = '') => {
+        console.log("FECHA LOG: ", dateFilter);
+        if (campo === 'datetime') {
+            date = filtro;
+        }
         try {
-            const response = await axios.get('http://localhost:8000/logs', {
-                params: {
-                    filtro,
-                    campo,
-                    offset,
-                    date
+            const response = await fetch(`http://localhost:8000/logs?filtro=${filtro}&campo=${campo}&offset=${offset}&date=${date}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
             });
-            setLogs(response.data);
-            setFilteredLogs(response.data);
+            if (!response.ok) {
+                throw new Error('Error al obtener los logs');
+            }
+            const data = await response.json();  // Parseamos el JSON de la respuesta
+            setLogs(data);  // Guardamos los logs completos
+            setFilteredLogs(data);  // Guardamos los logs filtrados
         } catch (error) {
             console.error('Error fetching logs:', error);
         }
@@ -36,11 +41,9 @@ const LogsPage = () => {
     const handleFilter = () => {
         let filtro = '';
         let campo = '';
+        let date = dateFilter || '';
 
-        if (dateFilter) {
-            filtro = dateFilter;
-            campo = 'datetime';
-        } else if (senderFilter) {
+        if (senderFilter) {
             filtro = senderFilter;
             campo = 'origin';
         } else if (receiverFilter) {
@@ -51,10 +54,10 @@ const LogsPage = () => {
             campo = 'case';
         } else if (reasonFilter) {
             filtro = reasonFilter;
-            campo = 'reason'
+            campo = 'reason';
         }
 
-        fetchLogs(filtro, campo);
+        fetchLogs(filtro, campo, date);
     };
 
     const handleGoBack = () => {
@@ -101,16 +104,20 @@ const LogsPage = () => {
                 <button onClick={handleFilter}>Filtrar</button>
             </div>
             <ul>
-                {filteredLogs.map((log, index) => (
-                    <li key={index}>
-                        <strong>Fecha:</strong> {log.date} |
-                        <strong> Sender:</strong> {log.sender} |
-                        <strong> Receiver:</strong> {log.receiver} |
-                        <strong> Case:</strong> {log.case} |
-                        <strong> Mensaje:</strong> {log.message} |
-                        <strong> Razon:</strong> {log.reason}
-                    </li>
-                ))}
+                {filteredLogs?.length > 0 ? (
+                    filteredLogs.map((log, index) => (
+                        <li key={index}>
+                            <strong>Fecha:</strong> {log.date} |
+                            <strong> Sender:</strong> {log.sender} |
+                            <strong> Receiver:</strong> {log.receiver} |
+                            <strong> Case:</strong> {log.case} |
+                            <strong> Mensaje:</strong> {log.message} |
+                            <strong> Razon:</strong> {log.reason}
+                        </li>
+                    ))
+                ) : (
+                    <p>No hay logs disponibles.</p>
+                )}
             </ul>
         </div>
     );
