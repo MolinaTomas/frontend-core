@@ -1,0 +1,50 @@
+h1 {
+    margin-bottom: 20px;
+}
+
+.logs-page {
+    padding: 20px;
+    background-color: #282c34;
+    color: white;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.back-button {
+    margin-right: 20px;
+    padding: 5px 10px;
+    background-color: #1b1b1f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background-color: #3a3f47;
+}
+
+.filters {
+    margin-bottom: 20px;
+}
+
+.filters input {
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.filters button {
+    padding: 5px 10px;
+    background-color: #1b1b1f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.filters button:hover {
+    background-color: #3a3f47;
+}

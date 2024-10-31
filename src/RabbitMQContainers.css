@@ -1,0 +1,10 @@
+.rabbitmq-containers {
+    background-color: #282c34;
+    /* Cambia el color de fondo a negro */
+    color: white;
+    /* Cambia el color del texto a blanco para mejor contraste */
+    padding: 20px;
+    /* Agrega un poco de espacio alrededor del contenido */
+    min-height: 100vh;
+    /* Asegúrate de que ocupe al menos toda la altura de la ventana */
+}

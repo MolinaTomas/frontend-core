@@ -1,0 +1,70 @@
+.avisos-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    /* es para que el boton este encima de los demas elementos */
+}
+
+.avisos-button {
+    background-color: #11073d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    font-family: "Afacad Flux", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+}
+
+.avisos-button:hover {
+    background-color: #080808;
+}
+
+.exclamation-icon {
+    margin-right: 5px;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #282c34;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    /* esto hace que el pop-up esté por encima del botón */
+    width: 600px;
+    padding: 20px;
+}
+
+.popup-content {
+    position: relative;
+    font-family: "Afacad Flux", sans-serif;
+    font-optical-sizing: auto;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: red;
+    /* Color del ícono de cerrar al pasar el mouse */
+}
