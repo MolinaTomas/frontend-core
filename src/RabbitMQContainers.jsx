@@ -11,10 +11,10 @@ const RabbitMQContainers = () => {
 
     const fetchQueues = async () => {
         const colasPredefinidas = [
-            { nombre: 'e_commerce', estado: 'running', ttl: 3, cantidad: 3, consumidores: 5, longitudMaxima: 1000, prioridadMaxima: 10, intercambioCartaMuerta: 'dlx_e_commerce', claveEnrutamientoCartaMuerta: 'dlrk_e_commerce' },
-            { nombre: 'gestion_interna', estado: 'running', ttl: 3, cantidad: 3, consumidores: 3, longitudMaxima: 800, prioridadMaxima: 8, intercambioCartaMuerta: 'dlx_gestion_interna', claveEnrutamientoCartaMuerta: 'dlrk_gestion_interna' },
-            { nombre: 'gestion_financiera', estado: 'stopped', ttl: 3, cantidad: 3, consumidores: 2, longitudMaxima: 500, prioridadMaxima: 5, intercambioCartaMuerta: 'dlx_gestion_financiera', claveEnrutamientoCartaMuerta: 'dlrk_gestion_financiera' },
-            { nombre: 'usuario', estado: 'running', ttl: 3, cantidad: 3, consumidores: 10, longitudMaxima: 2000, prioridadMaxima: 15, intercambioCartaMuerta: 'dlx_usuario', claveEnrutamientoCartaMuerta: 'dlrk_usuario' }
+            { nombre: 'e_commerce', ttl: 3, qty: 3 },
+            { nombre: 'gestion_interna', ttl: 3, qty: 3 },
+            { nombre: 'gestion_financiera', ttl: 3, qty: 3 },
+            { nombre: 'usuario', ttl: 3, qty: 3 }
         ];
         setQueues(colasPredefinidas);
     };
@@ -53,7 +53,7 @@ const RabbitMQContainers = () => {
             <div className="containers-list">
                 {queues.map((queue) => (
                     <RabbitMQContainer
-                        name={queue.name}
+                        nombre={queue.nombre}
                         ttl={queue.ttl}
                         qty={queue.qty || 0}
                     />

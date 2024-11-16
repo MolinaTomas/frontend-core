@@ -21,20 +21,6 @@
     margin-bottom: 10px;
 }
 
-.status {
-    padding: 5px 10px;
-    border-radius: 5px;
-    text-transform: uppercase;
-}
-
-.status.running {
-    background-color: #43a047;
-}
-
-.status.stopped {
-    background-color: #e53935;
-}
-
 .container-body {
     margin-top: 10px;
 }
