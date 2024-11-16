@@ -10,36 +10,22 @@ const RabbitMQContainers = () => {
     const navigate = useNavigate();
 
     const fetchQueues = async () => {
-        try {
-            const response = await fetch('http://3.142.225.39:3001/queues');
-            if (response.ok) {
-                const data = await response.json();
-                if (data && typeof data === 'object') {
-                    const queuesArray = Object.entries(data).map(([name, details]) => ({
-                        name,
-                        ...details,
-                    }));
-                    setQueues(queuesArray);
-                } else {
-                    setError('La respuesta de la API no tiene el formato esperado');
-                }
-            } else {
-                setError('Error al obtener las colas de RabbitMQ');
-                console.error('Error fetching RabbitMQ queues:', response.statusText);
-            }
-        } catch (error) {
-            setError('Error al obtener las colas de RabbitMQ');
-            console.error('Error fetching RabbitMQ queues:', error);
-        }
+        const colasPredefinidas = [
+            { nombre: 'e_commerce', estado: 'running', ttl: 3, cantidad: 3, consumidores: 5, longitudMaxima: 1000, prioridadMaxima: 10, intercambioCartaMuerta: 'dlx_e_commerce', claveEnrutamientoCartaMuerta: 'dlrk_e_commerce' },
+            { nombre: 'gestion_interna', estado: 'running', ttl: 3, cantidad: 3, consumidores: 3, longitudMaxima: 800, prioridadMaxima: 8, intercambioCartaMuerta: 'dlx_gestion_interna', claveEnrutamientoCartaMuerta: 'dlrk_gestion_interna' },
+            { nombre: 'gestion_financiera', estado: 'stopped', ttl: 3, cantidad: 3, consumidores: 2, longitudMaxima: 500, prioridadMaxima: 5, intercambioCartaMuerta: 'dlx_gestion_financiera', claveEnrutamientoCartaMuerta: 'dlrk_gestion_financiera' },
+            { nombre: 'usuario', estado: 'running', ttl: 3, cantidad: 3, consumidores: 10, longitudMaxima: 2000, prioridadMaxima: 15, intercambioCartaMuerta: 'dlx_usuario', claveEnrutamientoCartaMuerta: 'dlrk_usuario' }
+        ];
+        setQueues(colasPredefinidas);
     };
 
     useEffect(() => {
-        fetchQueues(); // función para montar
+        fetchQueues();
         const intervalId = setInterval(() => {
             fetchQueues();
-        }, 10000); // refresca cada 10 segundos
+        }, 10000);
 
-        return () => clearInterval(intervalId); // Limpia el intervalo al desmontar el componente
+        return () => clearInterval(intervalId);
     }, []);
 
     const handleGoBack = () => {
@@ -67,16 +53,9 @@ const RabbitMQContainers = () => {
             <div className="containers-list">
                 {queues.map((queue) => (
                     <RabbitMQContainer
-                        key={queue.name}
                         name={queue.name}
-                        status={queue.state || 'Unknown'}
                         ttl={queue.ttl}
-                        messages={queue.messages}
-                        consumers={queue.consumers}
-                        maxLength={queue.maxLength}
-                        maxPriority={queue.maxPriority}
-                        deadLetterExchange={queue.deadLetterExchange}
-                        deadLetterRoutingKey={queue.deadLetterRoutingKey}
+                        qty={queue.qty || 0}
                     />
                 ))}
             </div>

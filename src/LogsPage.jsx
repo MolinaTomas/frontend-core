@@ -4,7 +4,7 @@ import './LogsPage.css';
 
 const LogsPage = () => {
     const [logs, setLogs] = useState([]);
-    const [filteredLogs, setFilteredLogs] = useState([]); // Aseguramos que es un array vacÃ­o al inicio
+    const [filteredLogs, setFilteredLogs] = useState([]);
     const [dateFilter, setDateFilter] = useState('');
     const [senderFilter, setSenderFilter] = useState('');
     const [receiverFilter, setReceiverFilter] = useState('');
@@ -12,10 +12,6 @@ const LogsPage = () => {
     const [reasonFilter, setReasonFilter] = useState('');
 
     const fetchLogs = async (filtro = '', campo = '', date = '', offset = '') => {
-        console.log("FECHA LOG: ", dateFilter);
-        if (campo === 'datetime') {
-            date = filtro;
-        }
         try {
             const response = await fetch(`http://3.142.225.39:8000/logs?filtro=${filtro}&campo=${campo}&offset=${offset}&date=${date}`, {
                 method: 'GET',
@@ -26,11 +22,27 @@ const LogsPage = () => {
             if (!response.ok) {
                 throw new Error('Error al obtener los logs');
             }
-            const data = await response.json();  // Parseamos el JSON de la respuesta
-            setLogs(data);  // Guardamos los logs completos
-            setFilteredLogs(data);  // Guardamos los logs filtrados
+            const data = await response.json();
+            console.log("Logs recibidos:", data);
+
+            // Procesar los logs recibidos
+            const logsFormateados = data.map(log => {
+                const [fecha, sender, receiver, caso, mensaje] = log.split(';');
+                return {
+                    fecha: fecha || 'N/A',
+                    sender: sender || 'N/A',
+                    receiver: receiver || 'N/A',
+                    caso: caso || 'N/A',
+                    mensaje: mensaje || 'N/A'
+                };
+            });
+
+            setLogs(logsFormateados);
+            setFilteredLogs(logsFormateados);
         } catch (error) {
             console.error('Error fetching logs:', error);
+            setLogs([]);
+            setFilteredLogs([]);
         }
     };
 
@@ -95,24 +107,17 @@ const LogsPage = () => {
                     onChange={(e) => setCaseFilter(e.target.value)}
                     placeholder="Filtrar por Caso"
                 />
-                <input
-                    type="text"
-                    value={reasonFilter}
-                    onChange={(e) => setReasonFilter(e.target.value)}
-                    placeholder="Filtrar por Razon"
-                />
                 <button onClick={handleFilter}>Filtrar</button>
             </div>
             <ul>
-                {filteredLogs?.length > 0 ? (
+                {Array.isArray(filteredLogs) && filteredLogs.length > 0 ? (
                     filteredLogs.map((log, index) => (
                         <li key={index}>
-                            <strong>Fecha:</strong> {log.date} |
+                            <strong>Fecha:</strong> {log.fecha} |
                             <strong> Sender:</strong> {log.sender} |
                             <strong> Receiver:</strong> {log.receiver} |
-                            <strong> Case:</strong> {log.case} |
-                            <strong> Mensaje:</strong> {log.message} |
-                            <strong> Razon:</strong> {log.reason}
+                            <strong> Caso:</strong> {log.caso} |
+                            <strong> Mensaje:</strong> {log.mensaje} |
                         </li>
                     ))
                 ) : (

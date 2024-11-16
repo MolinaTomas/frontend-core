@@ -159,7 +159,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={isAuthenticated ? <Home /> : <Login onLogin={handleLogin} />} />
+        <Route path="/" element={isAuthenticated ? <Home /> : <LoginPage onLogin={handleLogin} />} />
         <Route path="/loginTest" element={<LoginPage onLogin={handleLogin} />} />
         <Route path="/rabbitmq-containers" element={<RabbitMQContainers />} />
         <Route path="/logs" element={<LogsPage />} />
