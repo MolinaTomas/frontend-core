@@ -11,15 +11,21 @@ const RabbitMQContainers = () => {
 
     const fetchQueues = async () => {
         try {
-            const response = await axios.get('http://core_proxy:3001/queues');
-            if (response.data && typeof response.data === 'object') {
-                const queuesArray = Object.entries(response.data).map(([name, details]) => ({
-                    name,
-                    ...details,
-                }));
-                setQueues(queuesArray);
+            const response = await fetch('http://3.142.225.39:3001/queues');
+            if (response.ok) {
+                const data = await response.json();
+                if (data && typeof data === 'object') {
+                    const queuesArray = Object.entries(data).map(([name, details]) => ({
+                        name,
+                        ...details,
+                    }));
+                    setQueues(queuesArray);
+                } else {
+                    setError('La respuesta de la API no tiene el formato esperado');
+                }
             } else {
-                setError('La respuesta de la API no tiene el formato esperado');
+                setError('Error al obtener las colas de RabbitMQ');
+                console.error('Error fetching RabbitMQ queues:', response.statusText);
             }
         } catch (error) {
             setError('Error al obtener las colas de RabbitMQ');

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -8,21 +7,41 @@ const Login = ({ onLogin }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Iniciando Sesion...");
         try {
-            // Intenta autenticar al usuario
-            const response = await axios.post('http://localhost:15672/api/auth', {
-                username,
-                password,
+            const response = await fetch(`http://3.142.225.39:8000/authlogin?username=${username}&password=${password}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
 
-            if (response.status === 200) {
-                // Si la autenticación es exitosa, llama a onLogin
-                onLogin();
+            if (response.ok) {
+                const responseData = await response.text();
+                if (responseData.trim() === '') {
+                    setError('Credenciales incorrectas. Inténtalo de nuevo.');
+                } else {
+                    onLogin();
+                }
+            } else {
+                setError('Credenciales incorrectas. Inténtalo de nuevo.');
             }
         } catch (err) {
-            setError('Credenciales incorrectas. Inténtalo de nuevo.');
+            setError('Error al intentar iniciar sesión. Inténtalo de nuevo.');
+            console.error(err);
         }
     };
+
+    /*const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (username !== 'admin' || password !== '59482*M97&!@3@%$2$r@') {
+            setError('Credenciales incorrectas. Inténtalo de nuevo.');
+            return;
+        }
+        onLogin();
+    };*/
+
+
 
     return (
         <div>

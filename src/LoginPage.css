@@ -1,0 +1,96 @@
+.App {
+  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: white;
+}
+
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  width: 600px;
+  margin: 120px auto 0 auto;
+  padding: 20px;
+  background-color: #070618;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  background-color: transparent;
+  padding: 0;
+}
+
+.label-field span {
+  margin-bottom: 5px;
+}
+
+.input-field {
+  max-width: 100%;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submit-button {
+  background-color: #61dafb;
+  color: black;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.submit-button:hover {
+  background-color: #21a1f1;
+}
+
+.toggle-button {
+  margin-top: 10px;
+  background-color: transparent;
+  color: #61dafb;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.toggle-button:hover {
+  color: #21a1f1;
+}
+
+.escudoLogo {
+  width: 150px;
+  height: 150px;
+}
+
+.titulo {
+  font-size: 40px;
+  font-weight: bold;
+}

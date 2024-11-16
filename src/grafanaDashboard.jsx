@@ -8,7 +8,7 @@ const GrafanaDashboard = ({ dashboardUID }) => {
         // Cambia la URL de Grafana y el API Key si es necesario
         const fetchDashboard = async () => {
             try {
-                const response = await axios.get(`http://grafana:3000/api/dashboards/uid/${dashboardUID}`, {
+                const response = await axios.get(`http://3.142.225.39:3000/api/dashboards/uid/${dashboardUID}`, {
                     headers: {
                         Authorization: 'Bearer <eyJrIjoibUZKaE9IVFVQTWlJYzFmR09kdW1yRmJUbVhNZ1IzRXAiLCJuIjoibWFpbiIsImlkIjoxfQ==>',
                     },

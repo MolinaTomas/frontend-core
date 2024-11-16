@@ -8,7 +8,7 @@ const RabbitMQContainer = ({ name, status, ttl, messages, consumers, maxLength, 
     const handleTTLChange = async () => {
         console.log("nuevoTTL: ", newTTL);
         try {
-            const response = await fetch(`http://core_service:8000/retry_queues?module=${name}&attribute=ttl&value=${newTTL}`, {
+            const response = await fetch(`http://3.142.225.39:8000/retry_queues?module=${name}&attribute=ttl&value=${newTTL}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ const RabbitMQContainer = ({ name, status, ttl, messages, consumers, maxLength, 
     const handleQTYChange = async () => {
         console.log("nuevoQTY: ", newQTY);
         try {
-            const response = await fetch(`http://core_service:8000/retry_queues?module=${name}&attribute=qty&value=${newQTY}`, {
+            const response = await fetch(`http://3.142.225.39:8000/retry_queues?module=${name}&attribute=qty&value=${newQTY}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const RabbitMQContainer = ({ name, status, ttl, messages, consumers, maxLength, 
 
     const handleRelease = async () => {
         try {
-            const response = await fetch(`http://core_service:8000/dead-letter/release?module=${name}`, {
+            const response = await fetch(`http://3.142.225.39:8000/dead-letter/release?module=${name}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ const LogsPage = () => {
             date = filtro;
         }
         try {
-            const response = await fetch(`http://localhost:8000/logs?filtro=${filtro}&campo=${campo}&offset=${offset}&date=${date}`, {
+            const response = await fetch(`http://3.142.225.39:8000/logs?filtro=${filtro}&campo=${campo}&offset=${offset}&date=${date}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

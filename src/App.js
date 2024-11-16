@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import RabbitMQContainers from './RabbitMQContainers';
 import LogsPage from './LogsPage';
 import Login from './Login';
+import LoginPage from './LoginPage';
 
 function Home() {
   const apiKey = 'eyJrIjoibUZKaE9IVFVQTWlJYzFmR09kdW1yRmJUbVhNZ1IzRXAiLCJuIjoibWFpbiIsImlkIjoxfQ==';
@@ -15,6 +16,9 @@ function Home() {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate('/rabbitmq-containers');
+  };
+  const handleLogsClick = () => {
+    navigate('/logs');
   };
   const fetchDashboardData = async () => {
     fetch(`http://grafana:3000/api/dashboards/uid/${dashboardUid}`, {
@@ -33,7 +37,8 @@ function Home() {
   };
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [iframeError, setIframeError] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHoveredRabbit, setIsHoveredRabbit] = useState(false);
+  const [isHoveredLogs, setIsHoveredLogs] = useState(false);
   const [alertLevel, setAlertLevel] = useState('Normal');
   const [alertDetails, setAlertDetails] = useState('Todo está funcionando correctamente');
 
@@ -103,9 +108,9 @@ function Home() {
 
           <h1>Dashboard de Monitoreo</h1>
           <div
-            className={`icon-container ${isHovered ? 'neon' : ''}`}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            className={`icon-container ${isHoveredRabbit ? 'neon' : ''}`}
+            onMouseEnter={() => setIsHoveredRabbit(true)}
+            onMouseLeave={() => setIsHoveredRabbit(false)}
             onClick={handleClick}
           >
             <span className="material-symbols-outlined icon">
@@ -113,6 +118,18 @@ function Home() {
             </span>
             <span className="icon-text">Colas RabbitMQ</span>
           </div>
+          <div
+            className={`icon-container ${isHoveredLogs ? 'neon' : ''}`}
+            onMouseEnter={() => setIsHoveredLogs(true)}
+            onMouseLeave={() => setIsHoveredLogs(false)}
+            onClick={handleLogsClick}
+          >
+            <span className="material-symbols-outlined icon">
+              manage_search
+            </span>
+            <span className="icon-text">Ver Logs</span>
+          </div>
+
 
         </div>
         <AvisosButton />
@@ -120,7 +137,7 @@ function Home() {
           <div>Error al cargar el contenido. Por favor, inténtalo más tarde.</div>
         ) : (
           <iframe
-            src="http://grafana:3000/d/lJNlSmkNk/futbol?orgId=1&kiosk"
+            src="http://3.142.225.39:3000/d/lJNlSmkNk/futbol?orgId=1&kiosk"
             width="100%"
             height="800"
             frameBorder="0"
@@ -143,6 +160,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={isAuthenticated ? <Home /> : <Login onLogin={handleLogin} />} />
+        <Route path="/loginTest" element={<LoginPage onLogin={handleLogin} />} />
         <Route path="/rabbitmq-containers" element={<RabbitMQContainers />} />
         <Route path="/logs" element={<LogsPage />} />
       </Routes>
